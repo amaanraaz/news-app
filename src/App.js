@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { useEffect } from "react";
+import Card from "./components/Card";
 
 function App() {
+  const [news,setNews] = useState([]);
+  useEffect(()=>{
+    fetch('https://api.spaceflightnewsapi.net/v3/articles')
+    .then((res)=>res.json())
+    .then((data)=>{
+      setNews(data);
+    },[]);
+  })
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>News</h1>
+      <div className="container">
+        {
+          news.map((item,key)=>{
+            return <Card item={item} key={key}/>
+          })
+        }
+      </div>
     </div>
   );
 }
